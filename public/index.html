@@ -1,0 +1,181 @@
+<!-- 1. Upload PDF -->
+<!-- 1. Upload PDF -->
+<!-- 1. Upload PDF -->
+<!-- 1. Upload PDF -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arrow District Scout Shop Badge Order Portal</title>
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/style.css">
+
+  <!-- External SDKs -->
+  <script type="text/javascript" src="https://gateway.sumup.com/gateway/ecom/card/v2/sdk.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <!-- Modular Scripts -->
+  <script src="/catalogue.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+<body>
+
+  <div id="mainView">
+    <div class="header">
+      <h1>Arrow District Badge Shop</h1>
+      <p>District Badge Ordering Portal | All Badges £0.90 each</p>
+    </div>
+
+    <!-- 1. Upload PDF -->
+    <div class="pdf-dropzone" onclick="document.getElementById('pdfInput').click()">
+      <input type="file" id="pdfInput" accept="application/pdf" style="display:none;" onchange="handlePdfUpload(event)">
+      <b>📄 1. Instant Order: Drop your OSM "Badge Shopping List.pdf" here</b>
+      <p style="margin:5px 0 0; font-size:13px; color:#6b21a8;">
+        Click to select or drag and drop your downloaded shopping list. It will auto-fill your Group, Section, and all needed badges!
+      </p>
+    </div>
+
+    <!-- 2. Manually Select Badges -->
+    <div class="card">
+      <h3 style="margin-top:0;">2. Manually Select Badges</h3>
+
+      <div class="search-bar">
+        <input type="text" id="badgeSearch" placeholder="🔍 Search catalogue (e.g. Outdoors, Nights Away, Chief Scout)..." oninput="renderBadges()">
+      </div>
+
+      <div class="filter-pills">
+        <button class="filter-pill active" onclick="setFilter('all', this)">All</button>
+        <button class="filter-pill" onclick="setFilter('staged', this)">Staged Badges</button>
+        <button class="filter-pill" onclick="setFilter('scouts', this)">Scouts</button>
+        <button class="filter-pill" onclick="setFilter('cubs', this)">Cubs</button>
+        <button class="filter-pill" onclick="setFilter('beavers', this)">Beavers</button>
+        <button class="filter-pill" onclick="setFilter('squirrels', this)">Squirrels</button>
+        <button class="filter-pill" onclick="setFilter('awards', this)">Core & Awards</button>
+      </div>
+
+      <div class="badge-grid" id="badgeGrid"></div>
+
+      <div class="form-group" style="margin-top:1.2rem;">
+        <label>Additional / Occasional Badges (or Notes):</label>
+        <textarea id="extraBadges" rows="3" placeholder="e.g. 1x Occasional St George badge, or specific badges not listed above."></textarea>
+      </div>
+    </div>
+
+    <!-- 3. Leader and Collection Information -->
+    <div class="card" id="leaderDetailsCard">
+      <h3 style="margin-top:0;">3. Leader & Collection Information</h3>
+      <p style="font-size:13px; color:#64748b; margin-top:-4px; margin-bottom:14px;">
+        ℹ️ <b>Collection Only:</b> Badges must be collected from the District Badge Secretary.
+      </p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Leader Name:</label>
+          <input type="text" id="leaderName" placeholder="e.g. Joe Bloggs" required>
+        </div>
+        <div class="form-group">
+          <label>Leader Email:</label>
+          <input type="email" id="leaderEmail" placeholder="joe@example.org.uk" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Scout Group / Explorer Unit:</label>
+          <select id="leaderGroup" required>
+            <option value="">-- Select Your Group --</option>
+            <option value="1st Chandler's Ford (Brickfield Lane)">1st Chandler's Ford (Brickfield Lane)</option>
+            <option value="1st Eastleigh">1st Eastleigh</option>
+            <option value="1st Fair Oak">1st Fair Oak</option>
+            <option value="2nd Chandler's Ford (Ramalley)">2nd Chandler's Ford (Ramalley)</option>
+            <option value="3rd Chandler's Ford (U.R.C.)">3rd Chandler's Ford (U.R.C.)</option>
+            <option value="4th Chandler's Ford (Hiltingbury)">4th Chandler's Ford (Hiltingbury)</option>
+            <option value="4th Eastleigh">4th Eastleigh</option>
+            <option value="7th Chandler's Ford">7th Chandler's Ford</option>
+            <option value="7th Eastleigh (2nd Fair Oak)">7th Eastleigh (2nd Fair Oak)</option>
+            <option value="11th Eastleigh (North Stoneham)">11th Eastleigh (North Stoneham)</option>
+            <option value="12th Eastleigh (1st Bishopstoke)">12th Eastleigh (1st Bishopstoke)</option>
+            <option value="Bishopstoke Sea Scouts (13th Eastleigh)">Bishopstoke Sea Scouts (13th Eastleigh)</option>
+            <option value="14th Eastleigh">14th Eastleigh</option>
+            <option value="15th Chandler's Ford (Allbrook & Otterbourne)">15th Chandler's Ford (Allbrook & Otterbourne)</option>
+            <option disabled>────────── Explorer Units ──────────</option>
+            <option value="Cobra Explorer Scouts">Cobra Explorer Scouts</option>
+            <option value="Fusion Explorer Scouts">Fusion Explorer Scouts</option>
+            <option value="Gecko Explorer Scouts">Gecko Explorer Scouts</option>
+            <option value="Kayoss Explorer Scouts">Kayoss Explorer Scouts</option>
+            <option value="Panthers Explorer Scouts">Panthers Explorer Scouts</option>
+            <option value="Phoenix Explorer Scouts">Phoenix Explorer Scouts</option>
+            <option value="Pleiades Explorer Scouts">Pleiades Explorer Scouts</option>
+            <option value="Scorpion Explorer Scouts">Scorpion Explorer Scouts</option>
+            <option disabled>────────── Other ──────────</option>
+            <option value="Arrow District (Network / Team)">Arrow District (Network / Team)</option>
+            <option value="Other / Out of District">Other / Out of District</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Section:</label>
+          <select id="leaderSection" required>
+            <option value="Squirrels">Squirrels</option>
+            <option value="Beavers">Beavers</option>
+            <option value="Cubs">Cubs</option>
+            <option value="Scouts" selected>Scouts</option>
+            <option value="Explorers">Explorers</option>
+            <option value="Network">Network</option>
+            <option value="Whole Group (Multiple Sections)">Whole Group (Multiple Sections)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Collection Arrangements & Urgency:</label>
+        <textarea id="leaderNotes" rows="2" placeholder="e.g. Needed for Investiture on Thursday evening if possible; Or No rush."></textarea>
+      </div>
+    </div>
+
+    <!-- 4. Order Summary and Payment -->
+    <div class="card" id="summaryCard">
+      <h3 style="margin-top:0;">4. Order Summary & Payment</h3>
+      <div id="selectedTableContainer">
+        <p style="color:var(--text-muted); font-size:14px;">No badges selected yet. Drop an OSM PDF above or use the <b>+</b> buttons.</p>
+      </div>
+
+      <div id="payment-buttons" style="margin-top:1.5rem; display:none;">
+        <button class="btn" id="cardBtn" onclick="startSumUpPayment()">💳 Pay with Card / Apple Pay</button>
+        <button class="btn btn-bacs" id="bacsBtn" onclick="requestBACS()">🏛️ Request BACS Invoice for Treasurer</button>
+      </div>
+
+      <div id="sumup-card-container" style="display:none; margin-top:1.5rem; max-width:440px;">
+        <h4>Enter Card Details</h4>
+        <div id="sumup-card"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thank You / Receipt View -->
+  <div id="thankYouView" style="display:none;">
+    <div class="header" style="background:var(--accent);">
+      <h1>Thank You for Your Order!</h1>
+      <p>Order Reference: <b id="tyOrderRef"></b></p>
+    </div>
+
+    <button class="btn-print" onclick="window.print()">🖨️ Print / Save Receipt as PDF</button>
+
+    <div id="tyStatusCard" class="invoice-card"></div>
+    <h3>Order Summary</h3>
+    <div id="tyItemsTable"></div>
+    
+    <div style="background:#f8f9fa; padding:1.25rem; border-radius:6px; margin:1.5rem 0; font-size:14px; border:1px solid #e2e8f0;">
+      <b>Leader / Group:</b> <span id="tyLeader"></span><br>
+      <b>Contact Email:</b> <span id="tyEmail"></span><br>
+      <b>Collection / Urgency Notes:</b> <span id="tyNotes"></span>
+    </div>
+
+    <button class="btn-print" onclick="window.print()">🖨️ Print / Save Receipt as PDF</button>
+  </div>
+
+</body>
+</html>

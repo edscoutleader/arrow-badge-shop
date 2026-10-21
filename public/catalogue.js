@@ -1,0 +1,117 @@
+// Helper to create staged badges with all official level tiers
+function makeStaged(name, levels, altName = null) {
+  return levels.map(lvl => ({
+    id: "st_" + name.toLowerCase().replace(/[^a-z0-9]/g, "_") + "_lvl" + lvl,
+    name: "Staged - " + name + " (Level " + lvl + ")",
+    cat: "staged",
+    // Store alternative search phrases (e.g. "Hikes Lvl 5" without "Away")
+    aliases: altName ? [altName.toLowerCase() + " " + lvl] : []
+  }));
+}
+
+const CATALOGUE = [
+  // --- Core & District / County Identity ---
+  { id: "cs_gold", name: "Award - Chief Scout's Gold", cat: "awards" },
+  { id: "cs_silver", name: "Award - Chief Scout's Silver", cat: "awards" },
+  { id: "cs_bronze", name: "Award - Chief Scout's Bronze", cat: "awards" },
+  { id: "cs_acorn", name: "Award - Chief Scout's Acorn", cat: "awards" },
+  { id: "membership", name: "Core - World Membership Badge", cat: "awards" },
+  { id: "moving_on", name: "Core - Moving On Award", cat: "awards" },
+  { id: "union_flag", name: "Core - Union Flag", cat: "awards" },
+  ...makeStaged("Joining In", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+  { id: "youshape", name: "Core - YouShape Award (Central)", cat: "awards" },
+  { id: "activity_plus", name: "Core - Activity Plus (Advanced)", cat: "awards" },
+  { id: "hampshire_id", name: "Identity - Hampshire County", cat: "awards" },
+  { id: "district_id", name: "Identity - Eastleigh / Arrow District", cat: "awards" },
+
+  // --- Staged Activity Badges (All Sections) ---
+  // Notice the second argument: matches both "Hikes" and "Hikes Away"
+  ...makeStaged("Nights Away", [1, 2, 3, 4, 5, 10, 15, 20, 35, 50, 75, 100, 125, 150, 175, 200], "Nights Away"),
+  ...makeStaged("Hikes Away", [1, 2, 5, 10, 15, 20, 35, 50, 75, 100], "Hikes"),
+  ...makeStaged("Navigator", [1, 2, 3, 4, 5]),
+  ...makeStaged("Swimmer", [1, 2, 3, 4, 5]),
+  ...makeStaged("Emergency Aid", [1, 2, 3, 4, 5]),
+  ...makeStaged("Time on the Water", [1, 2, 5, 10, 15, 20, 35, 50, 75, 100]),
+  ...makeStaged("Paddle Sports", [1, 2, 3, 4]),
+  ...makeStaged("Sailing", [1, 2, 3, 4]),
+  ...makeStaged("Musician", [1, 2, 3, 4, 5]),
+  ...makeStaged("Nautical Skills", [1, 2, 3, 4, 5, 6]),
+  ...makeStaged("Air Activities", [1, 2, 3, 4, 5, 6]),
+  ...makeStaged("Digital Citizen", [1, 2, 3, 4]),
+  ...makeStaged("Digital Maker", [1, 2, 3, 4, 5]),
+  ...makeStaged("Community Impact", [1, 2, 3, 4]),
+  ...makeStaged("Snowsports", [1, 2, 3, 4]),
+
+  // --- Scouts (10½ - 14) ---
+  { id: "sc_adventure", name: "Scouts - Adventure Challenge", cat: "scouts" },
+  { id: "sc_creative", name: "Scouts - Creative Challenge", cat: "scouts" },
+  { id: "sc_expedition", name: "Scouts - Expedition Challenge", cat: "scouts" },
+  { id: "sc_outdoors", name: "Scouts - Outdoors Challenge", cat: "scouts" },
+  { id: "sc_personal", name: "Scouts - Personal Challenge", cat: "scouts" },
+  { id: "sc_skills", name: "Scouts - Skills Challenge", cat: "scouts" },
+  { id: "sc_team_leader", name: "Scouts - Team Leader Challenge", cat: "scouts" },
+  { id: "sc_teamwork", name: "Scouts - Teamwork Challenge", cat: "scouts" },
+  { id: "sc_world", name: "Scouts - World Challenge", cat: "scouts" },
+  { id: "sc_athletics", name: "Scouts - Athletics Activity", cat: "scouts" },
+  { id: "sc_camper", name: "Scouts - Camper Activity", cat: "scouts" },
+  { id: "sc_chef", name: "Scouts - Chef Activity", cat: "scouts" },
+  { id: "sc_communicator", name: "Scouts - Communicator Activity", cat: "scouts" },
+  { id: "sc_cyclist", name: "Scouts - Cyclist Activity", cat: "scouts" },
+  { id: "sc_diy", name: "Scouts - DIY Activity", cat: "scouts" },
+  { id: "sc_fire_safety", name: "Scouts - Fire Safety Activity", cat: "scouts" },
+  { id: "sc_forester", name: "Scouts - Forester Activity", cat: "scouts" },
+  { id: "sc_geocaching", name: "Scouts - Geocaching Activity", cat: "scouts" },
+  { id: "sc_naturalist", name: "Scouts - Naturalist Activity", cat: "scouts" },
+  { id: "sc_pioneer", name: "Scouts - Pioneer Activity", cat: "scouts" },
+  { id: "sc_survival", name: "Scouts - Survival Skills Activity", cat: "scouts" },
+  { id: "sc_pl_stripes", name: "Scouts - Patrol Leader Stripes (2 red)", cat: "scouts" },
+  { id: "sc_apl_stripes", name: "Scouts - Assistant Patrol Leader Stripes (1 red)", cat: "scouts" },
+  { id: "sc_spl_stripes", name: "Scouts - Senior Patrol Leader Stripes (3 red)", cat: "scouts" },
+
+  // --- Cubs (8 - 10½) ---
+  { id: "cub_adventure", name: "Cubs - Our Adventure Challenge", cat: "cubs" },
+  { id: "cub_outdoors", name: "Cubs - Our Outdoors Challenge", cat: "cubs" },
+  { id: "cub_skills", name: "Cubs - Our Skills Challenge", cat: "cubs" },
+  { id: "cub_world", name: "Cubs - Our World Challenge", cat: "cubs" },
+  { id: "cub_teamwork", name: "Cubs - Teamwork Challenge", cat: "cubs" },
+  { id: "cub_team_leader", name: "Cubs - Team Leader Challenge", cat: "cubs" },
+  { id: "cub_personal", name: "Cubs - Personal Challenge", cat: "cubs" },
+  { id: "cub_book_reader", name: "Cubs - Book Reader Activity", cat: "cubs" },
+  { id: "cub_chef", name: "Cubs - Chef Activity", cat: "cubs" },
+  { id: "cub_communicator", name: "Cubs - Communicator Activity", cat: "cubs" },
+  { id: "cub_cyclist", name: "Cubs - Cyclist Activity", cat: "cubs" },
+  { id: "cub_diy", name: "Cubs - DIY Activity", cat: "cubs" },
+  { id: "cub_entertainer", name: "Cubs - Entertainer Activity", cat: "cubs" },
+  { id: "cub_home_help", name: "Cubs - Home Help Activity", cat: "cubs" },
+  { id: "cub_martial_arts", name: "Cubs - Martial Arts Activity", cat: "cubs" },
+  { id: "cub_naturalist", name: "Cubs - Naturalist Activity", cat: "cubs" },
+  { id: "cub_scientist", name: "Cubs - Scientist Activity", cat: "cubs" },
+  { id: "cub_sixer_stripes", name: "Cubs - Sixer Stripes (2 yellow)", cat: "cubs" },
+  { id: "cub_seconder_stripes", name: "Cubs - Seconder Stripes (1 yellow)", cat: "cubs" },
+
+  // --- Beavers (6 - 8) ---
+  { id: "bv_adventure", name: "Beavers - My Adventure Challenge", cat: "beavers" },
+  { id: "bv_outdoors", name: "Beavers - My Outdoors Challenge", cat: "beavers" },
+  { id: "bv_skills", name: "Beavers - My Skills Challenge", cat: "beavers" },
+  { id: "bv_world", name: "Beavers - My World Challenge", cat: "beavers" },
+  { id: "bv_personal", name: "Beavers - Personal Challenge", cat: "beavers" },
+  { id: "bv_teamwork", name: "Beavers - Teamwork Challenge", cat: "beavers" },
+  { id: "bv_book_reader", name: "Beavers - Book Reader Activity", cat: "beavers" },
+  { id: "bv_campcraft", name: "Beavers - Campcraft Activity", cat: "beavers" },
+  { id: "bv_collector", name: "Beavers - Collector Activity", cat: "beavers" },
+  { id: "bv_communicator", name: "Beavers - Communicator Activity", cat: "beavers" },
+  { id: "bv_cook", name: "Beavers - Cook Activity", cat: "beavers" },
+  { id: "bv_cyclist", name: "Beavers - Cyclist Activity", cat: "beavers" },
+  { id: "bv_experiment", name: "Beavers - Experiment Activity", cat: "beavers" },
+  { id: "bv_explore", name: "Beavers - Explore Activity", cat: "beavers" },
+
+  // --- Squirrels (4 - 6) ---
+  { id: "sq_all_about_me", name: "Squirrels - All About Me", cat: "squirrels" },
+  { id: "sq_all_around_us", name: "Squirrels - All Around Us", cat: "squirrels" },
+  { id: "sq_all_together", name: "Squirrels - All Together", cat: "squirrels" },
+  { id: "sq_feel_good", name: "Squirrels - Feel Good", cat: "squirrels" },
+  { id: "sq_brilliant_builder", name: "Squirrels - Brilliant Builder", cat: "squirrels" },
+  { id: "sq_exciting_explorer", name: "Squirrels - Exciting Explorer", cat: "squirrels" },
+  { id: "sq_go_wild", name: "Squirrels - Go Wild", cat: "squirrels" },
+  { id: "sq_super_chef", name: "Squirrels - Super Chef", cat: "squirrels" }
+];
